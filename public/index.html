@@ -374,9 +374,7 @@
         });
 
         // Autocompletado del NIT - VERSIÓN CORREGIDA
-        nitInput.addEventListener('input', async function(e) {
-            const searchTerm = e.target.value.trim();
-            console.log('🔍 Buscando:', searchTerm);
+
             
             // Si borran el texto, resetear la selección
             if (searchTerm.length === 0) {
