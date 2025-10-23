@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Solicitudes - Inmobiliaria Santacoloma</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: #f5f5f5;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .autocomplete-container {
+            position: relative;
+        }
+        
+        .autocomplete-list {
+            position: absolute;
+            width: 100%;
+            background: white;
+            border: 2px solid #3498db;
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            border-radius: 0 0 5px 5px;
+        }
+        
+        .autocomplete-item {
+            padding: 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .autocomplete-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .checkbox-group {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+        
+        .checkbox-group label {
+            font-weight: normal;
+            display: inline;
+            margin-left: 8px;
+        }
+        
+        button {
+            background: #ac1e2a;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+        
+        button:hover:not(:disabled) {
+            background: #991a25;
+        }
+        
+        button:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        .message {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+            display: none;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Estilos para términos y condiciones */
+        .terms-container {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background: #fafafa;
+            margin: 10px 0;
+        }
+
+        .terms-text {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .terms-text label {
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .terms-description {
+            font-size: 12px;
+            line-height: 1.4;
+            color: #666;
+            margin: 0;
+            font-weight: normal;
+        }
+
+        .terms-checkbox-inline {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .terms-checkbox-inline input[type="checkbox"] {
+            width: auto;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .terms-checkbox-inline label {
+            font-size: 12px;
+            line-height: 1.4;
+            color: #666;
+            font-weight: normal;
+            margin: 0;
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Formulario de Solicitud de Reparaciones</h1>
+        
+        <div id="message" class="message"></div>
+        
+        <form id="ticketForm">
+            <!-- Nombre y Apellido separados -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="nombres">Nombres <span class="required">*</span></label>
+                    <input type="text" id="nombres" name="nombres" placeholder="Ingrese sus nombres" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="apellidos">Apellidos <span class="required">*</span></label>
+                    <input type="text" id="apellidos" name="apellidos" placeholder="Ingrese sus apellidos" required>
+                </div>
+            </div>
+
+            <!-- Número de Contacto -->
+            <div class="form-group">
+                <label for="contact_number">Número de Contacto <span class="required">*</span></label>
+                <input type="tel" id="contact_number" name="contact_number" placeholder="Ej: 3001234567" required>
+            </div>
+
+            <!-- Correo Electrónico -->
+            <div class="form-group">
+                <label for="email">Correo Electrónico <span class="required">*</span></label>
+                <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" required>
+            </div>
+
+            <!-- NIT con Autocompletado -->
+            <div class="form-group">
+                <label for="company_nit">NIT de la Empresa <span class="required">*</span></label>
+                <div class="autocomplete-container">
+                    <input type="text" id="company_nit" name="company_nit" placeholder="Escribe el NIT para buscar..." autocomplete="off" required>
+                    <div id="autocompleteList" class="autocomplete-list"></div>
+                    <input type="hidden" id="selected_account_id" name="selected_account_id">
+                </div>
+                <small>Debe seleccionar una empresa de la lista desplegable</small>
+            </div>
+
+            <!-- Dirección -->
+            <div class="form-group">
+                <label for="address">Dirección</label>
+                <input type="text" id="address" name="address" placeholder="Dirección completa">
+            </div>
+
+            <!-- Zona -->
+            <div class="form-group">
+                <label for="zone">Zona <span class="required">*</span></label>
+                <select id="zone" name="zone" required>
+                    <option value="">Seleccione una zona...</option>
+                    <option value="Antigua Plaza de Ferias">Antigua Plaza de Ferias</option>
+                    <option value="La Macarena">La Macarena</option>
+                    <option value="La Romelia El Pollo">La Romelia El Pollo</option>
+                    <option value="Centro Pereira">Centro Pereira</option>
+                    <option value="Otro">Otro</option>
+                </select>
+            </div>
+
+            <!-- Número de Bodega -->
+            <div class="form-group">
+                <label for="warehouse_number">Número de Bodega <span class="required">*</span></label>
+                <input type="text" id="warehouse_number" name="warehouse_number" placeholder="Número de bodega" required>
+            </div>
+
+            <!-- Área de Reparación -->
+            <div class="form-group">
+                <label>Área de Reparación <span class="required">*</span> <small>(Puede seleccionar varias)</small></label>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" name="repair_area" value="Cubierta, Bajantes y canales" id="repair1">
+                    <label for="repair1">Cubierta, Bajantes y canales</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" name="repair_area" value="Hidrosanitario" id="repair2">
+                    <label for="repair2">Hidrosanitario</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" name="repair_area" value="Puertas, Ventanas y Escaleras" id="repair3">
+                    <label for="repair3">Puertas, Ventanas y Escaleras</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" name="repair_area" value="Eléctrico" id="repair4">
+                    <label for="repair4">Eléctrico</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" name="repair_area" value="Obra Blanca" id="repair5">
+                    <label for="repair5">Obra Blanca</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" name="repair_area" value="Obra Gris" id="repair6">
+                    <label for="repair6">Obra Gris</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" name="repair_area" value="Otro" id="repair7">
+                    <label for="repair7">Otro</label>
+                </div>
+            </div>
+
+            <!-- Descripción -->
+            <div class="form-group">
+                <label for="description">Descripción de la Solicitud <span class="required">*</span></label>
+                <textarea id="description" name="description" rows="5" placeholder="Describa detalladamente la solicitud de reparación..." required></textarea>
+            </div>
+
+            <!-- Archivos -->
+            <div class="form-group">
+                <label for="archivos">Archivos adjuntos</label>
+                <input type="file" id="archivos" name="archivos" multiple accept="image/*,video/*,.pdf">
+                <small>Puede adjuntar fotos, videos o documentos (máx. 5 archivos)</small>
+            </div>
+
+            <!-- Términos y condiciones actualizados -->
+            <div class="form-group">
+                <div class="terms-container">
+                    <div class="terms-text">
+                        <label><strong>Términos y condiciones*</strong></label>
+                        <p class="terms-description">
+                            Al llenar y enviar la información de este formulario, autorizo de manera expresa a ZIAPF S.A.S., a través de su establecimiento de comercio Santacoloma Inmobiliaria, para el tratamiento de mis datos personales conforme a lo establecido en la Política de Tratamiento de Datos Personales, la cual declaro haber leído y aceptado.
+                        </p>
+                    </div>
+                    
+                    <div class="terms-checkbox-inline">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">
+                            Autorizo a ZIAPF S.A.S. – Santacoloma Inmobiliaria para el tratamiento de mis datos personales, conforme a su Política de Tratamiento de Datos Personales. Reconozco que esta autorización es voluntaria e informada y que puedo ejercer mis derechos de acceso, rectificación, actualización o supresión en los términos de la Ley 1581 de 2012.
+                            <span class="required">*</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn">Enviar Solicitud</button>
+        </form>
+    </div>
+
+    <script>
+        // URL de tu backend - IMPORTANTE: Cambiar cuando esté en Render
+        const API_BASE_URL = 'http://localhost:3000';
+
+        // Elementos del DOM
+        const form = document.getElementById('ticketForm');
+        const nitInput = document.getElementById('company_nit');
+        const autocompleteList = document.getElementById('autocompleteList');
+        const selectedAccountId = document.getElementById('selected_account_id');
+        const submitBtn = document.getElementById('submitBtn');
+        const messageDiv = document.getElementById('message');
+
+        // Variable para rastrear la cuenta seleccionada
+        let selectedAccount = null;
+
+        // DEBUG: Verificar que los elementos se están encontrando
+        console.log('Elementos cargados:', {
+            form: !!form,
+            nitInput: !!nitInput,
+            autocompleteList: !!autocompleteList,
+            selectedAccountId: !!selectedAccountId
+        });
+
+        // Autocompletado del NIT - VERSIÓN CORREGIDA
+        nitInput.addEventListener('input', async function(e) {
+            const searchTerm = e.target.value.trim();
+            console.log('🔍 Buscando:', searchTerm);
+            
+            // Si borran el texto, resetear la selección
+            if (searchTerm.length === 0) {
+                resetSelection();
+                autocompleteList.style.display = 'none';
+                return;
+            }
+            
+            if (searchTerm.length < 2) {
+                autocompleteList.style.display = 'none';
+                return;
+            }
+            
+            try {
+                console.log('📡 Llamando API...');
+                const response = await fetch(`${API_BASE_URL}/api/search-accounts?nit=${encodeURIComponent(searchTerm)}`);
+                
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+                
+                const accounts = await response.json();
+                console.log('✅ Respuesta API:', accounts);
+                
+                if (accounts.length > 0) {
+                    showAutocompleteResults(accounts);
+                } else {
+                    autocompleteList.style.display = 'none';
+                    resetSelection();
+                }
+            } catch (error) {
+                console.error('❌ Error buscando empresas:', error);
+                autocompleteList.style.display = 'none';
+                showMessage('Error de conexión al buscar empresas', 'error');
+            }
+        });
+
+        function showAutocompleteResults(accounts) {
+            console.log('📋 Mostrando resultados:', accounts);
+            autocompleteList.innerHTML = '';
+            
+            accounts.forEach(account => {
+                const item = document.createElement('div');
+                item.className = 'autocomplete-item';
+                item.innerHTML = `
+                    <strong>${account.nit}</strong> - ${account.nombre}
+                    ${account.direccion ? `<br><small>${account.direccion}</small>` : ''}
+                `;
+                
+                item.addEventListener('click', () => {
+                    console.log('🖱️ Click en empresa:', account);
+                    selectAccount(account);
+                });
+                
+                autocompleteList.appendChild(item);
+            });
+            
+            autocompleteList.style.display = 'block';
+            console.log('👀 Lista de autocompletado mostrada');
+        }
+
+        // FUNCIÓN CORREGIDA: Seleccionar cuenta
+        function selectAccount(account) {
+            console.log('🎯 Seleccionando cuenta:', account);
+            
+            selectedAccount = account;
+            nitInput.value = `${account.nit} - ${account.nombre}`;
+            selectedAccountId.value = account.id;
+            
+            console.log('📝 Campo NIT actualizado:', nitInput.value);
+            console.log('🔒 Campo oculto actualizado:', selectedAccountId.value);
+            
+            autocompleteList.style.display = 'none';
+            nitInput.style.borderColor = '#2ecc71';
+            
+            // Habilitar el botón de envío
+            submitBtn.disabled = false;
+            
+            showMessage('Empresa seleccionada correctamente', 'success');
+            setTimeout(() => showMessage('', 'success'), 2000);
+        }
+
+        // Resetear selección
+        function resetSelection() {
+            console.log('🔄 Reseteando selección');
+            selectedAccount = null;
+            selectedAccountId.value = '';
+            nitInput.style.borderColor = '';
+            submitBtn.disabled = true;
+        }
+
+        // Validar checkboxes de área de reparación
+        function validateRepairAreas() {
+            const checkboxes = document.querySelectorAll('input[name="repair_area"]:checked');
+            const isValid = checkboxes.length > 0;
+            console.log('🔧 Validación áreas reparación:', isValid, checkboxes.length);
+            return isValid;
+        }
+
+        // Validar términos y condiciones
+        function validateTerms() {
+            const termsChecked = document.getElementById('terms').checked;
+            console.log('📄 Términos aceptados:', termsChecked);
+            return termsChecked;
+        }
+
+        // ENVÍO DEL FORMULARIO - VERSIÓN CORREGIDA
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            console.log('🚀 Iniciando envío del formulario...');
+            
+            // Validaciones paso a paso
+            console.log('🔍 Validando empresa seleccionada:', selectedAccountId.value);
+            if (!selectedAccountId.value) {
+                showMessage('❌ Debe seleccionar una empresa válida de la lista', 'error');
+                nitInput.style.borderColor = '#e74c3c';
+                nitInput.focus();
+                return;
+            }
+
+            console.log('🔍 Validando áreas de reparación...');
+            if (!validateRepairAreas()) {
+                showMessage('❌ Debe seleccionar al menos un área de reparación', 'error');
+                return;
+            }
+
+            console.log('🔍 Validando términos...');
+            if (!validateTerms()) {
+                showMessage('❌ Debe aceptar los términos y condiciones', 'error');
+                return;
+            }
+
+            console.log('✅ Todas las validaciones pasaron');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando...';
+
+            try {
+                // Crear FormData con todos los campos del formulario
+                const formData = new FormData(form);
+                
+                // DEBUG: Mostrar lo que se va a enviar
+                console.log('📦 Datos a enviar:');
+                for (let [key, value] of formData.entries()) {
+                    console.log(`   ${key}: ${value}`);
+                }
+                
+                const response = await fetch(`${API_BASE_URL}/api/create-ticket`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                console.log('📨 Respuesta recibida:', response.status);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Error ${response.status}: ${errorText}`);
+                }
+                
+                const result = await response.json();
+                console.log('🎉 Resultado:', result);
+                
+                if (result.success) {
+                    showMessage(`✅ ${result.message} - ID: ${result.ticketId}`, 'success');
+                    form.reset();
+                    resetSelection();
+                    setTimeout(() => showMessage('', 'success'), 5000);
+                } else {
+                    throw new Error(result.error || 'Error desconocido');
+                }
+            } catch (error) {
+                console.error('💥 Error completo:', error);
+                showMessage(`❌ Error: ${error.message}`, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Enviar Solicitud';
+            }
+        });
+
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type}`;
+            messageDiv.style.display = text ? 'block' : 'none';
+            console.log(`💬 Mensaje [${type}]: ${text}`);
+        }
+
+        // Cerrar autocompletado al hacer clic fuera
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.autocomplete-container')) {
+                autocompleteList.style.display = 'none';
+            }
+        });
+
+        // DEBUG: Verificar que todo esté listo
+        console.log('✅ Script de formulario cargado correctamente');
+    </script>
+</body>
+</html>
